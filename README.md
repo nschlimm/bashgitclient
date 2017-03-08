@@ -8,5 +8,6 @@ Features
 * attlassians view on git from their tutorials (not finished yet)
 * access all relevant config files instantly
 * jump around quickly your favorite GIT repo locations
+* change between projects and branches instantly
 
 Installation
