@@ -1,5 +1,5 @@
 #!/bin/sh
-supergithome=~/workspaces/personal/shellscripts
+supergithome=~/workspaces/personal/supergitclient
 source $supergithome/flexmenu.sh
 		
 function toDir () {

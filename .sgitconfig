@@ -1,0 +1,9 @@
+[workspaces]
+carriertech=~/workspaces/carriertech
+personal=~/workspaces/personal
+community=~/workspaces/community
+
+[locations]
+mavenrepohome=~/.m2
+sublimesnippets=/Users/niklasschlimm/Library/Application Support/Sublime Text 3/Packages/User
+userbin=/usr/local/bin
