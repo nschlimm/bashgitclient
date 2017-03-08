@@ -1,2 +1,0 @@
-Mi  8 Mär 2017 13:45:57 CET,Super GIT Home,Working with remotes:,Gently push actual,pushActual
-Mi  8 Mär 2017 13:46:09 CET,Super GIT Home,Working with remotes:,Gently push actual,pushActual
