@@ -219,12 +219,12 @@ function diffDrillDownAdvanced () { # list kommando; regexp to select filename f
         fi
         if [ $# -eq 3 ]
           then
-             kommando="git diff --color $3 $fname | diff-so-fancy"
+             kommando="git diff --color $3 -- $fname | diff-so-fancy"
              executeCommand "$kommando"
         fi
         if [ $# -eq 4 ]
           then
-             kommando="git diff --color $3 $4 $fname | diff-so-fancy"
+             kommando="git diff --color $3 $4 -- $fname | diff-so-fancy"
              executeCommand "$kommando"
         fi
 

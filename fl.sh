@@ -15,7 +15,7 @@ function purgDirCache () {
 initConfig
 
 clear
-thekeys=($(echo {a..p}) $(echo {r..z}))
+thekeys=($(echo {a..p}) $(echo {r..z}) $(echo {1..9}) $(echo {A..Z}))
 declare -x keycounter=0
 menuInit "Favorite locations"
 submenuHead "Locations:"

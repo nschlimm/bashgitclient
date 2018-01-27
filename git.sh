@@ -272,22 +272,6 @@ function fetachAll () {
        git fetch --all
 }
 
-function fetchAllStuff () {
-  changeProject
-  waitonexit
-  ls | while read line; do
-    cd $line
-    importantLog "In $line ..."
-    if [ -d .git ]; then
-       echo "... $line is a GIT repository ... fetching ..."
-       executeCommand "git fetch --all"
-     else
-      echo "... $line is not a GIT repository"
-    fi
-    cd ..
-  done
-}
-
 # submenus
 
 function workingDiffs() {
@@ -310,6 +294,28 @@ function gitExtras () {
   nowaitonexit
 }
 
+function reset () {
+  executeCommand "git reset"
+}
+
+function commitAll () {
+    executeCommand "git commit -a"
+}
+
+function assumeUnchanged () {
+    git ls-files
+    echo "Which file?"
+    read filename
+    executeCommand "git update-index --assume-unchanged $filename"
+}
+
+function unAssumeUnchanged () {
+    git ls-files -v | grep '^[[:lower:]]'
+    echo "Which file?"
+    read filename
+    executeCommand "git update-index --no-assume-unchanged $filename"
+}
+
 git fetch --all 2> /dev/null
 
 while ${continuemenu:=true}; do
@@ -318,11 +324,9 @@ menuInit "Super GIT Home"
 submenuHead "Working with remotes:"
 menuPunkt a "Gently push actual" pushActual
 menuPunkt c "Merge actual from actual origin" mergeActualFromOrigin
-menuPunkt d "Clone remote repository" cloneRemote
 menuPunkt e "Set upstream to actual" setUpstream
 menuPunkt f "Administer remotes" adminRemotes
 menuPunkt g "Show repository history" showRepoHisto
-menuPunkt h "Fetch all stuff" fetchAllStuff
 echo
 submenuHead "Working on local branches:"
 menuPunkt k "New local branch, checkout" newLocalBranch
@@ -330,6 +334,8 @@ menuPunkt n "Delete local branch" deleteBranch
 menuPunkt o "Merge from source branch to target branch" mergeSourceToTarget
 menuPunkt p "Show all branches (incl. remote)" showAllBranches
 menuPunkt r "Show branch history" showBranchHisto
+menuPunkt u "Unstage all staged files" reset
+menuPunkt x "Commit all changes" commitAll
 echo
 submenuHead "Navigating commit pointers:"
 menuPunkt l "Rollback head to last commit" rollBackLast
@@ -339,6 +345,8 @@ submenuHead "Other usefull actions:"
 menuPunkt s "Working with diffs" workingDiffs
 menuPunkt t "Interactively staging/unstaging files" interactiveStage
 menuPunkt w "Atlassian's view" atlassiansView
+menuPunkt y "Assume unchanged" assumeUnchanged
+menuPunkt z "Unassume unchanged" unAssumeUnchanged
 echo
 submenuHead "Git admin actions:"
 menuPunkt 1 "Show local git config" localGitConfig

@@ -1,5 +1,6 @@
 [workspaces]
 carriertech=~/workspaces/carriertech
+carriertech-scala=~/workspaces/carriertech-scala
 personal=~/workspaces/personal
 community=~/workspaces/community
 
