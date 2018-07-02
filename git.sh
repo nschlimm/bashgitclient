@@ -294,6 +294,11 @@ function gitExtras () {
   nowaitonexit
 }
 
+function gitPasswort () {
+  source $supergithome/userpas.sh
+  nowaitonexit
+}
+
 function reset () {
   executeCommand "git reset"
 }
@@ -322,9 +327,9 @@ while ${continuemenu:=true}; do
 clear
 menuInit "Super GIT Home"
 submenuHead "Working with remotes:"
-menuPunkt a "Gently push actual" pushActual
-menuPunkt c "Merge actual from actual origin" mergeActualFromOrigin
-menuPunkt e "Set upstream to actual" setUpstream
+menuPunkt a "Gently push current" pushActual
+menuPunkt c "Merge current from current origin" mergeActualFromOrigin
+menuPunkt e "Set upstream to current" setUpstream
 menuPunkt f "Administer remotes" adminRemotes
 menuPunkt g "Show repository history" showRepoHisto
 echo
@@ -354,6 +359,7 @@ menuPunkt 2 "Show global git config" globalGitConfig
 menuPunkt 3 "Administering aliases" adminAliases
 menuPunkt 4 "Show .gitignore" gitIgnore
 menuPunkt 5 "Git extras" gitExtras
+menuPunkt 6 "Change Git Passwords" gitPasswort
 echo
 submenuHead "Shortcuts"
 menuPunkt P "Change project" changeProject
