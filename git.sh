@@ -1,5 +1,5 @@
 #!/bin/sh
-supergithome=~/workspaces/personal/supergitclient
+supergithome=~/workspaces/personal/bashgitclient
 source $supergithome/flexmenu.sh
 trackchoices=$1
 

@@ -1,6 +1,6 @@
 [workspaces]
 personal=~/workspaces/personal
-community=~/workspaces/community
+projectbarbel=~/workspaces/projectbarbel
 
 [locations]
 mavenrepohome=~/.m2
