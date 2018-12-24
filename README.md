@@ -11,3 +11,5 @@ Features
 * change between projects and branches instantly
 
 Installation
+
+Just download the scripts and start on the command line using ´´´. git.sh´´
