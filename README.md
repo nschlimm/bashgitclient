@@ -3,6 +3,7 @@
 This purely Bash based GIT client automates the GIT stuff required in your day to day work.
 
 ## Features
+
 * gentle and intelligent push of changed stuff
 * tracks your favorite commands to make a favorites menu for each project
 * attlassians view on git from their tutorials (not finished yet)
@@ -10,10 +11,12 @@ This purely Bash based GIT client automates the GIT stuff required in your day t
 * jump around quickly your favorite GIT repo locations
 * change between projects and branches instantly
 
-## Installation
+## Getting started
 
-Just download the scripts and start on the command line by typing `. git.sh`
-You should adopt the configuration in `.sgitconfig` as required. Its self explaining.
+- Just download the scripts
+- configure your `supergithome` variable in git.sh, e.g. `supergithome=~/workspaces/personal/bashgitclient`
+- configure your workspace details in `.sgitcofig`
+- start on the command line by typing `. git.sh`
 
 ## Menu Demo
 
