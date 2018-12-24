@@ -1,6 +1,6 @@
 # supergitclient
 
-This client automates the GIT stuff required day to day.
+This purely Bash based GIT client automates the GIT stuff required in your day to day work.
 
 ## Features
 * gentle and intelligent push of changed stuff
