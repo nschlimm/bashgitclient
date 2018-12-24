@@ -1,4 +1,4 @@
-# supergitclient
+# bashgitclient
 
 This purely Bash based GIT client automates the GIT stuff required in your day to day work.
 
@@ -16,7 +16,8 @@ This purely Bash based GIT client automates the GIT stuff required in your day t
 - Just download the scripts
 - configure your `supergithome` variable in git.sh, e.g. `supergithome=~/workspaces/personal/bashgitclient`
 - configure your workspace details in `.sgitcofig`
-- install https://github.com/so-fancy/diff-so-fancy
+- optional: install https://github.com/so-fancy/diff-so-fancy
+- optional: install https://github.com/tj/git-extras
 - start on the command line by typing `. git.sh`
 
 ## Menu Demo
