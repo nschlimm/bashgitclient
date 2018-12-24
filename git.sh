@@ -322,6 +322,7 @@ function unAssumeUnchanged () {
 }
 
 git fetch --all 2> /dev/null
+continuemenu=true
 
 while ${continuemenu:=true}; do
 clear
