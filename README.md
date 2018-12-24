@@ -13,7 +13,7 @@ This purely Bash based GIT client automates the GIT stuff required in your day t
 ## Installation
 
 Just download the scripts and start on the command line by typing `. git.sh`
-You should adopt the configurstaion in `.sgitconfig` as required. Its self explaining.
+You should adopt the configuration in `.sgitconfig` as required. Its self explaining.
 
 ## Menu Demo
 
