@@ -12,4 +12,4 @@ Features
 
 Installation
 
-Just download the scripts and start on the command line using `. git.sh
+Just download the scripts and start on the command line by typing `. git.sh`
