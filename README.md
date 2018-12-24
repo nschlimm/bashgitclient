@@ -1,6 +1,6 @@
 # supergitclient
 
-This client automates the stuff required day to day.
+This client automates the GIT stuff required day to day.
 
 ## Features
 * gentle and intelligent push of changed stuff
@@ -17,4 +17,5 @@ You should adopt the configurstaion in `.sgitconfig` as required. Its self expla
 
 ## Menu Demo
 
-https://user-images.githubusercontent.com/876604/50402436-f47f8f00-0796-11e9-8226-f27bad266791.png
+![menudemo](https://user-images.githubusercontent.com/876604/50402436-f47f8f00-0796-11e9-8226-f27bad266791.png)
+
