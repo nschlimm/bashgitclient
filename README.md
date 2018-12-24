@@ -16,6 +16,7 @@ This purely Bash based GIT client automates the GIT stuff required in your day t
 - Just download the scripts
 - configure your `supergithome` variable in git.sh, e.g. `supergithome=~/workspaces/personal/bashgitclient`
 - configure your workspace details in `.sgitcofig`
+- install https://github.com/so-fancy/diff-so-fancy
 - start on the command line by typing `. git.sh`
 
 ## Menu Demo
