@@ -24,7 +24,7 @@ function findOut () {
 	executeCommand "git standup $author \"$since\""
 }
 
-function obliberate () {
+function obliterate () {
 	read -p "This programm completely deletes. Continue (y/n)? " -n 1 -r
 	echo
 	if [[ $REPLY =~ [Yy]$ ]]; then
@@ -32,7 +32,7 @@ function obliberate () {
 		read -p "Remove $selected (y/n)? " -n 1 -r
 		echo
 		if [[ $REPLY =~ [Yy]$ ]]; then
-		   executeCommand "git obliberate $selected"
+		   executeCommand "git obliterate $selected"
 		fi
 	fi
 	
@@ -58,7 +58,7 @@ menuPunkt m "Display change in blame between two revisions" changeBlame
 echo
 submenuHead "Effect repository actions"
 menuPunkt q "Remove latest commits and add their changes to stage" removeLatest
-menuPunkt r "Completely remove a file from the repository" obliberate
+menuPunkt r "Completely remove a file from the repository" obliterate
 menuPunkt s "Setup git repository in current dir" "git setup"
 echo
 choice
