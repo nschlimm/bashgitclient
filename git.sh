@@ -321,6 +321,13 @@ function unAssumeUnchanged () {
     executeCommand "git update-index --no-assume-unchanged $filename"
 }
 
+function coRemoteBranch () {
+       git branch -r
+       echo "Which remote branch?"
+       read bname
+       git checkout --track $bname 
+}
+
 git fetch --all 2> /dev/null
 continuemenu=true
 
@@ -336,6 +343,7 @@ menuPunkt g "Show repository history" showRepoHisto
 echo
 submenuHead "Working on local branches:"
 menuPunkt k "New local branch, checkout" newLocalBranch
+menuPunkt v "Fetch remote branch" coRemoteBranch
 menuPunkt n "Delete local branch" deleteBranch
 menuPunkt o "Merge from source branch to target branch" mergeSourceToTarget
 menuPunkt p "Show all branches (incl. remote)" showAllBranches
