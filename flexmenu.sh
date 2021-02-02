@@ -171,11 +171,11 @@ function drillDown () {
         read fname
         if [ $# -eq 1 ]
           then
-            git diff --color $1 $fname | diff-so-fancy
+            git difftool $1 $fname
         fi
         if [ $# -eq 2 ]
           then
-            git diff --color $1:$fname $2:$fname | diff-so-fancy
+            git difftool $1:$fname $2:$fname
         fi
      else
         break
@@ -219,12 +219,12 @@ function diffDrillDownAdvanced () { # list kommando; regexp to select filename f
         fi
         if [ $# -eq 3 ]
           then
-             kommando="git diff --color $3 -- $fname | diff-so-fancy"
+             kommando="git difftool $3 -- $fname"
              executeCommand "$kommando"
         fi
         if [ $# -eq 4 ]
           then
-             kommando="git diff --color $3 $4 -- $fname | diff-so-fancy"
+             kommando="git difftool $3 $4 -- $fname"
              executeCommand "$kommando"
         fi
 
