@@ -2,6 +2,7 @@
 volumeman=/mnt/c/Users/ns103/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Experts/volumeman
 bashgitclient=/mnt/c/Users/ns103/OneDrive/Dokumente/workspace/bashgitclient
 mqlunit=/mnt/c/Users/ns103/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Include/MqlUnit
+vmsettings=/mnt/c/Users/ns103/OneDrive/Dokumente/trading/vmtestsettings
 
 [locations]
 mavenrepohome=~/.m2

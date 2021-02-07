@@ -228,10 +228,10 @@ function diffDrillDownAdvanced () { # list kommando; regexp to select filename f
              executeCommand "$kommando"
         fi
 
-        read -p $'\n<Press any key to return>' -n 1 -r
-        if [ "$REPLY" = "c" ]; then
-           clear
-        fi        
+#        read -p $'\n<Press any key to return>' -n 1 -r
+#        if [ "$REPLY" = "c" ]; then
+#           clear
+#        fi        
 
    done
 
