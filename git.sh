@@ -1,5 +1,5 @@
 #!/bin/sh
-supergithome=/mnt/c/Users/ns103/OneDrive/Dokumente/workspace/bashgitclient
+supergithome=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/bashgitclient
 source $supergithome/flexmenu.sh
 trackchoices=$1
 

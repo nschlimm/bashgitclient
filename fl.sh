@@ -1,11 +1,18 @@
 #!/bin/sh
-supergithome=/mnt/c/Users/ns103/OneDrive/Dokumente/workspace/bashgitclient
+supergithome=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/bashgitclient
 source $supergithome/flexmenu.sh
 		
 function toDir () {
 	vars="$*" # all splitted words back to one var
 	eval cd "${vars// /\\ }" # escape spaces
 	nowaitonexit
+}
+
+function toDirAndTerminate () {
+  vars="$*" # all splitted words back to one var
+  eval cd "${vars// /\\ }" # escape spaces
+  nowaitonexit
+  terminate
 }
 
 function purgDirCache () {
@@ -24,7 +31,7 @@ if [ -n ${locations+x} ]; then
 	do
 		locationname=$(echo "$j" | cut -f1 -d'=')
 		locationdir=$(echo "$j" | cut -f2 -d'=')
-		menuPunkt "${thekeys[$keycounter]}" "$locationname" "toDir $locationdir"
+		menuPunkt "${thekeys[$keycounter]}" "$locationname" "toDirAndTerminate $locationdir"
         ((keycounter++))
     done
 fi
