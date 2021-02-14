@@ -5,5 +5,8 @@ mqlunit=/mnt/c//Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9
 vmsettings=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/vmtestsettings
 
 [locations]
-testconfig=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/testconfig
+workspace=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace
 smartclient=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Experts/volumeman/3_Development/src/test/smartclient
+testconfig=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/testconfig
+metaeditorhome=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424
+testreporthome=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/_vmtest/test_report

@@ -1,0 +1,10 @@
+  169  sudo apt install bashdb
+  179  sudo apt install tar
+  186  sudo apt install make
+  189  sudo apt install strings
+  201  sudo apt install binutils
+  221  sudo apt install xlsx2csv
+  226  sudo apt install xml2
+  246  sudo apt install in2csv
+  248  sudo apt install csvkit
+  254  sudo apt install libreoffice

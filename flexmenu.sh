@@ -57,6 +57,24 @@ function callKeyFunktion () {
    return 5
 }
 
+function alternateRows() {
+   #!/bin/bash
+   header="$1"
+   i=1
+   while read line
+    do
+      if [[ $i == 1 ]] && [[ $header != "" ]]; then
+        echo -e "\e[48;5;93m$line\e[0m"
+      else 
+        echo -e "\e[48;5;238m$line\e[0m"
+      fi
+      read line
+      echo -e "\e[48;5;232m$line\e[0m"
+      i=$((i+1))
+    done
+    echo -en "\e[0m"
+}
+
 function nowaitonexit () {
   waitstatus=false
 }
@@ -183,10 +201,16 @@ function drillDown () {
    done
 }
 
-function selectItem () {
+function selectItem () { 
   listkommando="$1" # list to select from
   regexp="$2" # optional: regexp to grep considered item from selected line item, e.g. 'M foo.bar -> grep foo.bar with "[^ ]*$"
-  eval $listkommando | nl -n 'ln' -s " "
+  width="$3"
+  header="$4"
+  if [[ $width = "" ]]; then
+    eval $listkommando | nl -n 'ln' -s " "
+  else 
+    eval $listkommando | nl -n 'ln' -s " " | awk -v m=${width} '{printf("[%-'${width}'s]\n", $0)}' | alternateRows $header
+  fi
   echo "Select line or nothing to exit:"
   read linenumber
   if [ "$linenumber" = "q" ]; then
@@ -237,6 +261,25 @@ function diffDrillDownAdvanced () { # list kommando; regexp to select filename f
 
   fi
 
+}
+
+function circulateOnSelectedItem() {
+     listkommando=$1
+     regexp=$2
+     comand=$3
+     while true; do
+        
+        importantLog "Drill down into file diff: $listkommando"
+
+        selectItem "$listkommando" "$regexp"
+
+        if [[ $fname = "" ]]; then
+          break
+        fi
+
+        eval $comand
+
+    done
 }
 
 function noterminate () { continuemenu=true; }
