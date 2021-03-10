@@ -14,6 +14,11 @@ function coloredLog () { # logentry ; color code
   export GREP_COLOR='01;31'
 }
 
+function blueLog() {
+  log="$1"
+  coloredLog "${log}" '1;37;44'
+}
+
 function menuInit () {
   touch $rawdatahome$rawdatafilename
   actualmenu="$1"
@@ -201,11 +206,14 @@ function drillDown () {
    done
 }
 
-function selectItem () { 
+function selectItem () { # magic function letting user select from list. out: fname(selected item), message(dot-seperated part of number selection, e.g. 18.r -> r is the message)
   listkommando="$1" # list to select from
   regexp="$2" # optional: regexp to grep considered item from selected line item, e.g. 'M foo.bar -> grep foo.bar with "[^ ]*$"
-  width="$3"
-  header="$4"
+  width="$3" # optional if coloring is desired
+  header="$4" # special coloring for header
+
+  blueLog "${listkommando}"
+
   if [[ $width = "" ]]; then
     eval $listkommando | nl -n 'ln' -s " "
   else 
@@ -213,6 +221,8 @@ function selectItem () {
   fi
   echo "Select line or nothing to exit:"
   read linenumber
+  message=$(echo "${linenumber}" | cut -d '.' -f2) # message = linenumer if no dot-message selected 
+  linenumber=$(echo "${linenumber}" | cut -d '.' -f1)
   if [ "$linenumber" = "q" ]; then
     break
   fi
@@ -267,17 +277,19 @@ function circulateOnSelectedItem() {
      listkommando=$1
      regexp=$2
      comand=$3
+     width=$4
+     header=$5
      while true; do
         
-        importantLog "Drill down into file diff: $listkommando"
+        importantLog "Make a selection: $listkommando"
 
-        selectItem "$listkommando" "$regexp"
+        selectItem "$listkommando" "$regexp" "$4" "$5"
 
         if [[ $fname = "" ]]; then
           break
         fi
 
-        eval $comand
+        eval "$comand"
 
     done
 }
@@ -341,3 +353,38 @@ function initConfig () {
 }
 
 waitonexit
+
+function selectFromSubdirectories() { #out: selected_subdir(name, not full path)
+   dir="$1" #full dir name
+   heading="$2"
+   coloredLog "${dir}" '1;37;44'
+   ! [ "${heading}" = "" ] && coloredLog "${heading}"
+   selectItem "ls -F ${dir} | cut -d '/' -f1" ".*" 100
+   selected_subdir=$fname
+}
+
+function selectFromCsv() { #out: $linenumber(selected of csv file), $headers(of csv file), $fname(selected row values)
+   csvfile=$1 #source csv file full name
+   heading=$2
+   coloredLog "${csvfile}" '1;37;44'
+   headers=$(head -1 $csvfile | sed 's/ /_/g' | awk -F, 'BEGIN {i=1} {while (i<=NF) {str=str substr($i,1,12)","; i++;}} END {print str}')
+   ! [ "${heading}" = "" ] && coloredLog ${heading}
+   selectItem '(echo "${headers}" && sed -n "2,40p" "${csvfile}") | perl -pe "s/((?<=,)|(?<=^)),/ ,/g;" | column -t -s, | less -S' '.*' 192 1
+}
+
+function coloredCsvTable() { #show csv file with header line in nice format
+   csvfile="$1" #source csv file full name
+   linefromXX="$2"
+   linetoXX="$3"
+   width="$4" # optional if coloring is desired
+   heading="$5"
+   if [ "${linefromXX}" = "1" ]; then linefromXX="2"; fi
+   headers=$(head -1 $csvfile | sed 's/ /_/g' | awk -F, 'BEGIN {i=1} {while (i<=NF) {str=str substr($i,1,12)","; i++;}} END {print str}')
+   coloredLog "${csvfile}" '1;37;44'
+   ! [ "${heading}" = "" ] && coloredLog ${heading}
+   if [ "${width}" = "" ]; then
+     (echo "${headers}" && sed -n "${linefromXX},${linetoXX}p" "${csvfile}") | perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' | column -t -s, | less -S | alternateRows 1
+   else
+     (echo "${headers}" && sed -n "${linefromXX},${linetoXX}p" "${csvfile}") | perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' | column -t -s, | less -S | awk -v m=${width} '{printf("[%-'${width}'s]\n", $0)}' | alternateRows 1
+   fi
+}
