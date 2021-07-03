@@ -22,7 +22,7 @@ function dirHead () {
 
 function treeCommit () {
    echo "Last 15 commits"
-   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 15
+   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 100
    echo "Enter commit name"
    read cname
    diffDrillDownAdvanced "git diff --name-status $cname" "[ ].*$" "$cname"
@@ -35,7 +35,7 @@ function treeStage () {
 
 function commitCommit () {
    echo "Last 15 commits"
-   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 15
+   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 100
    echo "(a) Enter 'baseline' commit name"
    read cnamea
    echo "(b) Enter second commit name"

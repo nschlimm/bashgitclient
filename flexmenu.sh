@@ -365,11 +365,13 @@ function selectFromSubdirectories() { #out: selected_subdir(name, not full path)
 
 function selectFromCsv() { #out: $linenumber(selected of csv file), $headers(of csv file), $fname(selected row values)
    csvfile=$1 #source csv file full name
-   heading=$2
+   linefrom=$2
+   lineto=$3
+   linefrom=${linefrom:=2}
+   lineto=${lineto:=80}
    coloredLog "${csvfile}" '1;37;44'
    headers=$(head -1 $csvfile | sed 's/ /_/g' | awk -F, 'BEGIN {i=1} {while (i<=NF) {str=str substr($i,1,12)","; i++;}} END {print str}')
-   ! [ "${heading}" = "" ] && coloredLog ${heading}
-   selectItem '(echo "${headers}" && sed -n "2,40p" "${csvfile}") | perl -pe "s/((?<=,)|(?<=^)),/ ,/g;" | column -t -s, | less -S' '.*' 192 1
+   selectItem '(echo "${headers}" && sed -n '${linefrom}','${lineto}'p "${csvfile}") | perl -pe "s/((?<=,)|(?<=^)),/ ,/g;" | column -t -s, | less -S' '.*' 192 1
 }
 
 function coloredCsvTable() { #show csv file with header line in nice format
