@@ -2,14 +2,13 @@
 volumeman=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Experts/volumeman
 bashgitclient=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/bashgitclient
 mqlunit=/mnt/c//Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Include/MQLUnit
-vmtestconfig1=/mnt/c//Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/cfhb
-vmtestconfig2=/mnt/c//Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/cfhs
-vmtestconfig3=/mnt/c//Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/cfmcci
+configs=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester
+reports=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/_vmtest/test_report
+templates=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/Common/Files/_testcases
 
 [locations]
 workspace=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace
 smartclient=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Experts/volumeman/3_Development/src/test/smartclient
-testconfig1=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/cfhb
-testconfig2=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/MQL5/Profiles/Tester/cfhs
 metaeditorhome=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424
 testreporthome=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/DFD781628E4A9A2ABCB805A733B23424/_vmtest/test_report
+templates=/mnt/c/Users/Anwender/AppData/Roaming/MetaQuotes/Terminal/Common/Files/_testcases

@@ -1,8 +1,8 @@
 #!/bin/sh
 # specify keyfunktionsmap=() array and source this script for flex menu capability
 # examplecall: menuPunkt a "Push actual (fetch, merge, commit, push)" pushActual.
-rawdatafilename=rawdata.txt
-summaryfilename=summary.txt
+#rawdatafilename=rawdata.txt
+#summaryfilename=summary.txt
 menuitemsfilename=menugroups.txt
 rawdatahome=$supergithome/
 configfilename=.sgitconfig
@@ -46,8 +46,8 @@ function menuPunkt () {
 function callKeyFunktion () { 
    for i in "${menudatamap[@]}"
      do
-       keys=${i:0:1}
-         if [ "$1" == "$keys" ]
+       keys2=$(echo $i | cut -d'#' -f1)
+         if [ "$1" = "$keys2" ]
            then
             method=$(echo "$i" | cut -f3 -d#)
             if [[ $trackchoices == 1 ]]; then
@@ -98,7 +98,7 @@ function logCommand () {
             submenuname=$(echo "$i" | cut -f4 -d#)
             method=$(echo "$i" | cut -f3 -d#)
             today=$(date)
-            echo "$today,$actualmenu,$submenuname,$gkommando,$method" >> $rawdatahome$rawdatafilename
+            #echo "$today,$actualmenu,$submenuname,$gkommando,$method" >> $rawdatahome$rawdatafilename
          fi
    done
 }
@@ -206,11 +206,18 @@ function drillDown () {
    done
 }
 
-function selectItem () { # magic function letting user select from list. out: fname(selected item), message(dot-seperated part of number selection, e.g. 18.r -> r is the message)
+function selectItem () { 
+  # magic function letting user select from list. 
+  # out: 'linenumber' -> selected line number
+  #      selected (the complete line selected)
+  #      fname (selected line after regular expression applied -> what you want to have as return value from selection)
+  #      message (dot-seperated part of number selection, e.g. 18.r -> r is the message)
   listkommando="$1" # list to select from
   regexp="$2" # optional: regexp to grep considered item from selected line item, e.g. 'M foo.bar -> grep foo.bar with "[^ ]*$"
   width="$3" # optional if coloring is desired
   header="$4" # special coloring for header
+  xpreselection="$5" # preselection
+  xdarkprocessing="$6"
 
   blueLog "${listkommando}"
 
@@ -219,20 +226,27 @@ function selectItem () { # magic function letting user select from list. out: fn
   else 
     eval $listkommando | nl -n 'ln' -s " " | awk -v m=${width} '{printf("[%-'${width}'s]\n", $0)}' | alternateRows $header
   fi
-  echo "Select line or nothing to exit:"
-  read linenumber
+  linenumber=""
+  selected=""
+  message=""
+  dfltln=${xpreselection}
+  if [ "$xdarkprocessing" = "" ]; then
+    echo "Select line or hit enter for preselection [${xpreselection}]:"
+    read linenumber
+  fi
+  linenumber=${linenumber:-$dfltln}
   message=$(echo "${linenumber}" | cut -d '.' -f2) # message = linenumer if no dot-message selected 
   linenumber=$(echo "${linenumber}" | cut -d '.' -f1)
-  if [ "$linenumber" = "q" ]; then
-    break
-  fi
-  if [ -z "$linenumber" ]; then
+  re='^[0-9]+$'
+  if ! [[ $linenumber =~ $re ]]; then
      selected=""
+     message=${linenumber}
+     fname=""
    else
      selected=$(eval "$listkommando" | sed -n ${linenumber}p)
      echo $selected
+     fname=$(echo $selected | grep -oh "${regexp:-.*}")
   fi
-  fname=$(echo $selected | grep -oh "${regexp:-.*}" | sed "s/ //g")
   echo "... selected ${fname:-nothing}"
 }
 
@@ -309,7 +323,7 @@ function choice () {
   else
     callKeyFunktion $REPLY
     if [[ $? -gt 1 ]]; then
-      coloredLog "Huh ($REPLY)?" "1;31"
+      coloredLog "Huh ($request)?" "1;31"
     fi
     if $waitstatus; then
       read -p $'\n<Press any key to return>' -n 1 -r
@@ -357,29 +371,34 @@ waitonexit
 function selectFromSubdirectories() { #out: selected_subdir(name, not full path)
    dir="$1" #full dir name
    heading="$2"
+   xdarkprocessing="$3"
+   xpreselection="$4"
+
    coloredLog "${dir}" '1;37;44'
    ! [ "${heading}" = "" ] && coloredLog "${heading}"
-   selectItem "ls -F ${dir} | cut -d '/' -f1" ".*" 100
+   selectItem "ls -F ${dir} | cut -d '/' -f1" ".*" 100 "$heading" "$xpreselection" "$xdarkprocessing"
    selected_subdir=$fname
 }
 
 function selectFromCsv() { #out: $linenumber(selected of csv file), $headers(of csv file), $fname(selected row values)
    csvfile=$1 #source csv file full name
-   linefrom=$2
-   lineto=$3
+   linefrom=$2 #paging line from
+   lineto=$3 #paging line to
+   preselection=$4
+   xdarkprocessing="$5"
    linefrom=${linefrom:=2}
    lineto=${lineto:=80}
    coloredLog "${csvfile}" '1;37;44'
    headers=$(head -1 $csvfile | sed 's/ /_/g' | awk -F, 'BEGIN {i=1} {while (i<=NF) {str=str substr($i,1,12)","; i++;}} END {print str}')
-   selectItem '(echo "${headers}" && sed -n '${linefrom}','${lineto}'p "${csvfile}") | perl -pe "s/((?<=,)|(?<=^)),/ ,/g;" | column -t -s, | less -S' '.*' 192 1
+   selectItem '(echo "${headers}" && sed -n '${linefrom}','${lineto}'p "${csvfile}") | perl -pe "s/((?<=,)|(?<=^)),/ ,/g;" | column -t -s, | less -S' '.*' 192 1 "$preselection" "$xdarkprocessing"
 }
 
 function coloredCsvTable() { #show csv file with header line in nice format
    csvfile="$1" #source csv file full name
-   linefromXX="$2"
-   linetoXX="$3"
+   linefromXX="$2" #paging line from
+   linetoXX="$3" #paging line to
    width="$4" # optional if coloring is desired
-   heading="$5"
+   heading="$5" # count of heading lines
    if [ "${linefromXX}" = "1" ]; then linefromXX="2"; fi
    headers=$(head -1 $csvfile | sed 's/ /_/g' | awk -F, 'BEGIN {i=1} {while (i<=NF) {str=str substr($i,1,12)","; i++;}} END {print str}')
    coloredLog "${csvfile}" '1;37;44'

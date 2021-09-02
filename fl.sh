@@ -70,7 +70,10 @@ eval cd "${priorlocation// /\\ }" # return to previous location
 submenuHead "GIT repos inside workspaces:"
 for (( i = 0; i < ${#gitlocations[@]}; i++ )); do
     arrIN=(${gitlocations[$i]})
-	menuPunkt "${arrIN[0]}" "${arrIN[1]}" "${arrIN[2]} ${arrIN[3]}" 
+	IFSOLD=$IFS
+	IFS='/' read -r -a filenamearray <<< "${arrIN[1]}"
+	IFS=$IFSOLD
+	menuPunkt "${arrIN[0]}" ".../${filenamearray[-3]}/${filenamearray[-2]}/${filenamearray[-1]}" "${arrIN[2]} ${arrIN[3]}" 
 done
 if $uncached; then coloredLog "NEW" "1;42"; else coloredLog "CACHED" "1;42"; fi
 echo
