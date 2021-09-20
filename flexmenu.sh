@@ -36,10 +36,50 @@ function submenuHead () {
   export GREP_COLOR='01;31'
 }
 
+function submenuHeadClm () {
+  actualsubmenuname="$1"
+  export GREP_COLOR='1;36'
+  pad "$1" 90 - R | grep --color ".*"
+  export GREP_COLOR='01;31'
+}
+
+   pad () {
+       local text=${1?Usage: pad text [length] [character] [L|R|C]}
+       local length=${2:-80}
+       local char=${3:--}
+       local side=${4:-R}
+       local line l2
+ 
+       [ ${#text} -ge $length ] && { echo "$text"; return; }
+ 
+       char=${char:0:1}
+       side=${side^^}
+   
+       printf -v line "%*s" $(($length - ${#text})) ' '
+       line=${line// /$char}
+   
+       if [[ $side == "R" ]]; then
+           echo "${text}${line}"
+       elif [[ $side == "L" ]]; then
+           echo "${line}${text}"
+       elif [[ $side == "C" ]]; then
+           l2=$((${#line}/2))
+           echo "${line:0:$l2}${text}${line:$l2}"
+       fi
+   }
+
 function menuPunkt () {
 
    menudatamap+=("$1#$2#$3#$actualsubmenuname#$actualmenu")
    echo "$1. $2"
+
+}
+
+function menuPunktClm () {
+
+   menudatamap+=("$1#$2#$3#$actualsubmenuname#$actualmenu")
+   menudatamap+=("$4#$5#$6#$actualsubmenuname#$actualmenu")
+   echo -e "${1}.,${2},${4}.,${5}" | awk -F , -v OFS=, '{printf "%-3s",$1; printf "%-45s",$2; printf "%-3s",$3; printf "%-45s",$4; printf("\n"); }'
 
 }
 

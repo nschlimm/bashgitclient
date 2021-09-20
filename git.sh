@@ -311,6 +311,7 @@ function assumeUnchanged () {
     git ls-files
     echo "Which file?"
     read filename
+    [ "${filename}" = "" ] && waitonexit && return 
     executeCommand "git update-index --assume-unchanged $filename"
 }
 
