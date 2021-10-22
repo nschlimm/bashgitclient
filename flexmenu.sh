@@ -420,6 +420,26 @@ function selectFromSubdirectories() { #out: selected_subdir(name, not full path)
    selected_subdir=$fname
 }
 
+function selectFromCSVList()
+{
+   list="$1" #csv list
+   heading="$2"
+   width="$3"
+
+   coloredLog "${dir}" '1;37;44'
+   ! [ "${heading}" = "" ] && coloredLog "${heading}"
+   [ -f .csvlist ] && rm .csvlist
+   touch .csvlist
+   variable=$list
+   for i in ${variable//,/ }
+   do
+       echo "$i" >> .csvlist
+   done
+   selectItem "cat .csvlist" ".*" ${width} 
+   selected_item=$fname
+   rm .csvlist
+}
+
 function selectFromCsv() { #out: $linenumber(selected of csv file), $headers(of csv file), $fname(selected row values)
    csvfile=$1 #source csv file full name
    linefrom=$2 #paging line from

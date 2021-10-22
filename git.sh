@@ -164,7 +164,11 @@ function newLocalBranch() {
 }
 
 function rollBackLast() {
-            git reset HEAD~1
+            read -p "This rolls back one commit. Continue? [y/n]" -n 1 -r
+            if [[ $REPLY =~ ^[Yy]$ ]]
+                then
+                  git reset HEAD~1
+            fi
             read -p "Override updates in local working dir? " -n 1 -r
             echo    # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]
