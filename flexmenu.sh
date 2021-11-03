@@ -439,7 +439,7 @@ function selectFromCSVList()
    selected_item=$fname
    rm .csvlist
 }
-
+#comment
 function selectFromCsv() { #out: $linenumber(selected of csv file), $headers(of csv file), $fname(selected row values)
    csvfile=$1 #source csv file full name
    linefrom=$2 #paging line from
