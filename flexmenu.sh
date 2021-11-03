@@ -19,6 +19,16 @@ function blueLog() {
   coloredLog "${log}" '1;37;44'
 }
 
+function greenLog() {
+  log="$1"
+  coloredLog "${log}" '1;97;42'
+}
+
+function redLog() {
+  log="$1"
+  coloredLog "${log}" '1;37;44'
+}
+
 function menuInit () {
   touch $rawdatahome$rawdatafilename
   actualmenu="$1"
