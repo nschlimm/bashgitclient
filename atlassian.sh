@@ -17,6 +17,10 @@ function inspectingRepos () {
 	nowaitonexit
 }
 
+function undoingChanges () {
+	source $supergithome/atUndoingChanges.sh
+	nowaitonexit
+}
 
 while ${continuemenu:=true}; do
 clear
@@ -27,7 +31,7 @@ submenuHead "Working on your local repository"
 menuPunkt a "Setting up a repository" settingUp
 menuPunkt b "Saving changes" savingChanges
 menuPunkt c "Inspecting a repository" inspectingRepos
-menuPunkt d "Undoing changes" 
+menuPunkt d "Undoing changes" undoingChanges
 menuPunkt e "Rewriting history" 
 echo
 submenuHead "Collaborating with your homies"

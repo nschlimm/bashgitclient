@@ -1,5 +1,5 @@
 #!/bin/sh
-supergithome=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/bashgitclient
+supergithome=/Users/d6t6/workspace/bashgitclient
 source $supergithome/flexmenu.sh
 trackchoices=$1
 
@@ -100,11 +100,6 @@ function commitChanges () {
     fi
 }
 
-function mergeActualFromOrigin() {
-  git fetch 
-  git merge origin/$actual
-}
-
 function adminRemotes() {
               echo
             echo "Administer remotes:"
@@ -163,13 +158,23 @@ function newLocalBranch() {
             fi      
 }
 
+function pushLocalBranch() {
+    echo "Name des neuen Branch?"
+    read branchname
+    [ "${branchname}" = "" ] && waitonexit && return 
+    git branch $branchname 
+    git checkout $branchname
+    git git push -u origin $branchname
+}
+
 function rollBackLast() {
             read -p "This rolls back one commit. Continue? [y/n]" -n 1 -r
             if [[ $REPLY =~ ^[Yy]$ ]]
                 then
                   git reset HEAD~1
             fi
-            read -p "Override updates in local working dir? " -n 1 -r
+            git status -s
+            read -p "Delete file modifications in local working dir? " -n 1 -r
             echo    # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]
                 then
@@ -330,6 +335,7 @@ function coRemoteBranch () {
        git branch -r
        echo "Which remote branch?"
        read bname
+       [ "${bname}" = "" ] && waitonexit && return 
        git checkout --track $bname 
 }
 
@@ -341,28 +347,26 @@ clear
 menuInit "Super GIT Home"
 submenuHead "Working with remotes:"
 menuPunkt a "Gently push current" pushActual
-menuPunkt c "Merge current from current origin" mergeActualFromOrigin
 menuPunkt e "Set upstream to current" setUpstream
 menuPunkt f "Administer remotes" adminRemotes
 menuPunkt g "Show repository history" showRepoHisto
 echo
 submenuHead "Working on local branches:"
-menuPunkt k "New local branch, checkout" newLocalBranch
-menuPunkt v "Fetch remote branch" coRemoteBranch
-menuPunkt n "Delete local branch" deleteBranch
+menuPunkt k "New local/remote branch, checkout" newLocalBranch
+menuPunkt L "Push local branch to remote" pushLocalBranch
+menuPunkt v "Checkout remote branch" coRemoteBranch
+menuPunkt n "Delete local/remote branch" deleteBranch
 menuPunkt o "Merge from source branch to target branch" mergeSourceToTarget
 menuPunkt p "Show all branches (incl. remote)" showAllBranches
 menuPunkt r "Show branch history" showBranchHisto
-menuPunkt u "Unstage all staged files" reset
-menuPunkt x "Commit all changes" commitAll
 echo
-submenuHead "Navigating commit pointers:"
+submenuHead "Undoing stuff:"
+menuPunkt u "Unstage all staged files" reset
 menuPunkt l "Rollback head to last commit" rollBackLast
 menuPunkt m "Undo reset commands" undoReset
 echo
 submenuHead "Other usefull actions:"
 menuPunkt s "Working with diffs" workingDiffs
-menuPunkt t "Interactively staging/unstaging files" interactiveStage
 menuPunkt w "Atlassian's view" atlassiansView
 menuPunkt y "Assume unchanged" assumeUnchanged
 menuPunkt z "Unassume unchanged" unAssumeUnchanged

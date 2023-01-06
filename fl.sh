@@ -1,5 +1,5 @@
-#!/bin/sh
-supergithome=/mnt/c/Users/Anwender/OneDrive/Dokumente/workspace/bashgitclient
+#!/bin/bash
+supergithome=/Users/d6t6/workspace/bashgitclient
 source $supergithome/flexmenu.sh
 		
 function toDir () {
@@ -71,9 +71,10 @@ submenuHead "GIT repos inside workspaces:"
 for (( i = 0; i < ${#gitlocations[@]}; i++ )); do
     arrIN=(${gitlocations[$i]})
 	IFSOLD=$IFS
-	IFS='/' read -r -a filenamearray <<< "${arrIN[1]}"
+	IFS=' ' 
+	read -r -a filenamearray <<< "${arrIN[1]}"
 	IFS=$IFSOLD
-	menuPunkt "${arrIN[0]}" ".../${filenamearray[-3]}/${filenamearray[-2]}/${filenamearray[-1]}" "${arrIN[2]} ${arrIN[3]}" 
+	menuPunkt "${arrIN[0]}" "${arrIN[1]}" "${arrIN[2]} ${arrIN[3]}" 
 done
 if $uncached; then coloredLog "NEW" "1;42"; else coloredLog "CACHED" "1;42"; fi
 echo
