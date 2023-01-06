@@ -1,7 +1,20 @@
 #!/bin/sh
 
-function revertToCommit () {
+function revertLastCommit () {
+   echo "Enter YES if you want to revert to last commit:"
+   read cname
+   [ "${cname}" != "YES" ] && waitonexit && return 
    git revert HEAD
+}
+
+function clean () {
+   git clean -dn
+   git clean -n
+   echo "Enter YES if you want to delete the shown changes on directory:"
+   read cname
+   [ "${cname}" != "YES" ] && waitonexit && return 
+   git clean -df
+   git clean -f
 }
 
 function revertToCommit () {
@@ -39,6 +52,7 @@ menuPunkt a "Revert last commit - (keep commit history)" revertLastCommit
 menuPunkt b "Revert commit - (keep commit history)" revertToCommit
 menuPunkt c "(Soft) Reset commit - (delete some commits)" resetToCommit
 menuPunkt d "(Hard) Reset commit - (delete some commits)" resetToCommitHard
+menuPunkt e "Undo local changes (only effects untracked files)" clean
 
 echo
 echo "NOTE: if your work with remote repos and already 
