@@ -18,7 +18,7 @@ This purely Bash based GIT client automates the GIT stuff required in your day t
 - configure your workspace details in `.sgitcofig`
 - optional: install https://github.com/so-fancy/diff-so-fancy
 - optional: install https://github.com/tj/git-extras
-- start on the command line by typing `. git.sh` or - if you experience problems with the menu presentation - use `bash git.sh`
+- start on the command line by typing `. git.sh`
 
 ## Menu Demo
 
