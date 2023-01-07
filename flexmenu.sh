@@ -1,8 +1,8 @@
 #!/bin/sh
 # specify keyfunktionsmap=() array and source this script for flex menu capability
 # examplecall: menuPunkt a "Push actual (fetch, merge, commit, push)" pushActual.
-#rawdatafilename=rawdata.txt
-#summaryfilename=summary.txt
+rawdatafilename=rawdata.txt
+summaryfilename=summary.txt
 menuitemsfilename=menugroups.txt
 rawdatahome=$supergithome/
 configfilename=.sgitconfig
@@ -148,7 +148,7 @@ function logCommand () {
             submenuname=$(echo "$i" | cut -f4 -d#)
             method=$(echo "$i" | cut -f3 -d#)
             today=$(date)
-            #echo "$today,$actualmenu,$submenuname,$gkommando,$method" >> $rawdatahome$rawdatafilename
+            echo "$today,$actualmenu,$submenuname,$gkommando,$method" >> $rawdatahome$rawdatafilename
          fi
    done
 }
@@ -179,6 +179,7 @@ function compileMenu () {
    echo
    importantLog "Your sorted summary of menu favorites"
    cat $rawdatahome$menuitemsfilename 
+   echo
 }
 
 function purgeCash () {
@@ -308,7 +309,7 @@ function diffDrillDownAdvanced () { # list kommando; regexp to select filename f
   if $listkommando | grep -q ".*"; then
    while true; do
         
-        importantLog "Drill down into file diff: $listkommando"
+        importantLog "Drill down into file logcommanddiff: $listkommando"
 
         selectItem "$listkommando" "$regexp"
 

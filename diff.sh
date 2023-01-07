@@ -29,7 +29,7 @@ function treeCommit () {
 }
 
 function treeStage () {
-   commit=$(git show --oneline -s | grep -o "[a-z0-9]*")
+   commit=$(git show --oneline -s | grep -o "^[a-z0-9]*")
    diffDrillDownAdvanced "git diff --name-status $commit" "[ ].*$" "$commit"	
 }
 

@@ -360,16 +360,9 @@ menuPunkt o "Merge from source branch to target branch" mergeSourceToTarget
 menuPunkt p "Show all branches (incl. remote)" showAllBranches
 menuPunkt r "Show branch history" showBranchHisto
 echo
-submenuHead "Undoing stuff:"
-menuPunkt u "Unstage all staged files" reset
-menuPunkt l "Rollback head to last commit" rollBackLast
-menuPunkt m "Undo reset commands" undoReset
-echo
 submenuHead "Other usefull actions:"
 menuPunkt s "Working with diffs" workingDiffs
 menuPunkt w "Atlassian's view" atlassiansView
-menuPunkt y "Assume unchanged" assumeUnchanged
-menuPunkt z "Unassume unchanged" unAssumeUnchanged
 echo
 submenuHead "Git admin actions:"
 menuPunkt 1 "Show local git config" localGitConfig
