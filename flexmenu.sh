@@ -295,8 +295,13 @@ function selectItem () {
      fname=""
    else
      selected=$(eval "$listkommando" | sed -n ${linenumber}p)
-     echo $selected
-     fname=$(echo $selected | grep -oh "${regexp:-.*}")
+     echo "$selected"
+     if echo "$regexp" | grep -q "awk"; then
+       blueLog "awk detected $regexp"
+       fname=$(echo "$selected" | eval "$regexp")
+     else
+       fname=$(echo "$selected" | grep -oh "${regexp:-.*}")
+     fi
   fi
   echo "... selected ${fname:-nothing}"
 }
