@@ -5,7 +5,7 @@ trackchoices=$1
 
 function switchContext() {
     selectItem "kubectl config get-contexts" "awk '{print \$2}'"
-    if [[ $fname == *"nothing"* ]]; then return 0; fi
+    if [[ $fname == "" ]]; then return 0; fi
     kubectl config use-context $fname
 }
 
@@ -39,38 +39,88 @@ function addContext() {
 
 function showPodManifest() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
-    if [[ $fname == *"nothing"* ]]; then return 0; fi
+    if [[ $fname == "" ]]; then return 0; fi
     kubectl get pods $fname -o yaml
 }
 
 function describePod() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
-    if [[ $fname == *"nothing"* ]]; then return 0; fi
+    if [[ $fname == "" ]]; then return 0; fi
     kubectl describe pods $fname
 }
 
 function getPodLogs() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
-    if [[ $fname == *"nothing"* ]]; then return 0; fi
+    if [[ $fname == "" ]]; then return 0; fi
     kubectl logs $fname
+}
+
+function logOnPod() {
+    selectItem "kubectl get pods" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    kubectl exec -it $fname -- sh
+}
+
+function logOnDb(){
+   selectItem "kubectl get pods" "awk '{print \$1}'"
+   if [[ $fname == "" ]]; then return 0; fi
+   echo "DB user name (e.g. testUser)?"
+   read userName
+   echo "DB name (e.g. testDB)?"
+   read dbName
+   kubectl exec -it $fname -- psql --host localhost --username $userName -d $dbName
+}
+
+function switchNamespace() {
+    selectItem "kubectl get ns" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    kubectl config set-context --current --namespace $fname
+}
+
+function applyPodManifest() {
+    selectItem "grep -r 'kind: Pod' . | cut -d':' -f1" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    cat $fname
+    read -p "Apply manifest to Kubernetes (y/n)? " -n 1 -r
+    echo    # (optional) move to a new line                    if [[ $REPLY =~ ^[Yy]$ ]]
+    if [[ $REPLY =~ ^[Yy]$ ]]
+     then
+      kubectl apply -f $fname
+     fi
+}
+
+function deletePod() {
+    selectItem "kubectl get pods" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    kubectl delete pod $fname
+}
+
+function createNamespace(){
+   echo "Namespace name (e.g. frontend)?"
+   read nsName
+   kubectl create ns $nsName
 }
 
 continuemenu=true
 
 while ${continuemenu:=true}; do
 clear
-menuInit "Super GIT Home"
+menuInit "Super KUBECTL Home"
 echo "Current context: $(kubectl config current-context)"
+echo "Namespace: $(kubectl config view --minify -o jsonpath='{..namespace}')"
 echo
 submenuHead "Kubectl Config:"
 menuPunktClm a "Show config" "kubectl config view" b "Switch context" switchContext
-menuPunktClm c "Add cluster" addCluster d "Add users (token)" addUsers
-menuPunktClm e "Add context" addContext 
+menuPunktClm c "Switch namespace" switchNamespace d "Add cluster" addCluster 
+menuPunktClm e "Add users (token)" addUsers f "Add context" addContext 
+menuPunktClm g "Edit config" "vim ~/.kube/config" h "Create namespace" createNamespace  
 echo
 submenuHead "Pods:"
-menuPunktClm f "List pods (ns=default)" "kubectl get pods" g "List pods (all namespaces)" "kubectl get pods --all-namespaces"
-menuPunktClm h "Show pod manifest" showPodManifest i "Describe pod" describePod
-menuPunktClm j "Get logs" getPodLogs
+menuPunktClm j "List pods (ns=default)" "kubectl get pods" k "List pods (all namespaces)" "kubectl get pods --all-namespaces"
+menuPunktClm l "Show pod state (desirec/observed)" showPodManifest m "Describe pod" describePod
+menuPunktClm n "Get logs" getPodLogs o "Log on to pod" logOnPod
+menuPunktClm p "Log on to DB" logOnDb r "Apply pod manifest" applyPodManifest
+menuPunkt s "Delete pod" deletePod
 echo
 choice
 done

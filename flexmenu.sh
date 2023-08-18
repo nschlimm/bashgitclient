@@ -105,7 +105,7 @@ function callKeyFunktion () {
             fi
             clear
             coloredLog "$method" '1;37;44'
-            $method
+            eval $method
             return 1
          fi
    done
