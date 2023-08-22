@@ -6,7 +6,7 @@ trackchoices=$1
 function switchContext() {
     selectItem "kubectl config get-contexts" "awk '{print \$2}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl config use-context $fname
+    executeCommand "kubectl config use-context $fname"
 }
 
 function addCluster() {
@@ -14,7 +14,7 @@ function addCluster() {
    read clusterName
    echo "Cluster address (e.g. https://5.6.7.8)?"
    read clusterAddress
-   kubectl config set-cluster $clusterName --server=$clusterAddress --insecure-skip-tls-verify
+   executeCommand "kubectl config set-cluster $clusterName --server=$clusterAddress --insecure-skip-tls-verify"
 }
 
 function addUsers() {
@@ -22,7 +22,7 @@ function addUsers() {
    read userName
    echo "Token (e.g. bHVNUkxJZU82d0JudWtpdktBbzhDZFVuSDVEYWtiVmJua3RVT3orUkNzDFGH)?"
    read userToken
-   kubectl config set-credentials $userName --token $userToken
+   executeCommand "kubectl config set-credentials $userName --token $userToken"
 }
 
 function addContext() {
@@ -34,31 +34,61 @@ function addContext() {
    read namspace
    echo "User (e.g. admin)?"
    read userName
-   kubectl config set-context $contextName --cluster=$clusterName --namespace=$namspace --user=$userName
+   executeCommand "kubectl config set-context $contextName --cluster=$clusterName --namespace=$namspace --user=$userName"
 }
 
 function showPodManifest() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl get pods $fname -o yaml
+    executeCommand "kubectl get pods $fname -o yaml"
 }
 
 function describePod() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl describe pods $fname
+    executeCommand "kubectl describe pods $fname"
+}
+
+function showDeploymentManifest() {
+    selectItem "kubectl get deployments" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    executeCommand "kubectl get deployment $fname -o yaml"
+}
+
+function describeDeployment() {
+    selectItem "kubectl get deployments" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    executeCommand "kubectl describe deployment $fname"
+}
+
+function showServiceManifest() {
+    selectItem "kubectl get svc" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    executeCommand "kubectl get svc $fname -o yaml"
+}
+
+function describeService() {
+    selectItem "kubectl get svc" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    executeCommand "kubectl describe svc $fname"
+}
+
+function describeReplicaset() {
+    selectItem "kubectl get rs" "awk '{print \$1}'"
+    if [[ $fname == "" ]]; then return 0; fi
+    executeCommand "kubectl describe rs $fname"
 }
 
 function getPodLogs() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl logs $fname
+    executeCommand "kubectl logs $fname"
 }
 
 function logOnPod() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl exec -it $fname -- sh
+    executeCommand "kubectl exec -it $fname -- sh"
 }
 
 function logOnDb(){
@@ -68,13 +98,13 @@ function logOnDb(){
    read userName
    echo "DB name (e.g. testDB)?"
    read dbName
-   kubectl exec -it $fname -- psql --host localhost --username $userName -d $dbName
+   executeCommand "kubectl exec -it $fname -- psql --host localhost --username $userName -d $dbName"
 }
 
 function switchNamespace() {
     selectItem "kubectl get ns" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl config set-context --current --namespace $fname
+    executeCommand "kubectl config set-context --current --namespace $fname"
 }
 
 function applyPodManifest() {
@@ -85,20 +115,20 @@ function applyPodManifest() {
     echo    # (optional) move to a new line                    if [[ $REPLY =~ ^[Yy]$ ]]
     if [[ $REPLY =~ ^[Yy]$ ]]
      then
-      kubectl apply -f $fname
+      executeCommand "kubectl apply -f $fname"
      fi
 }
 
 function deletePod() {
     selectItem "kubectl get pods" "awk '{print \$1}'"
     if [[ $fname == "" ]]; then return 0; fi
-    kubectl delete pod $fname
+    executeCommand "kubectl delete pod $fname"
 }
 
 function createNamespace(){
    echo "Namespace name (e.g. frontend)?"
    read nsName
-   kubectl create ns $nsName
+   executeCommand "kubectl create ns $nsName"
 }
 
 continuemenu=true
@@ -116,12 +146,20 @@ menuPunktClm e "Add users (token)" addUsers f "Add context" addContext
 menuPunktClm g "Edit config" "vim ~/.kube/config" h "Create namespace" createNamespace  
 echo
 submenuHead "Pods:"
-menuPunktClm j "List pods (ns=default)" "kubectl get pods" k "List pods (all namespaces)" "kubectl get pods --all-namespaces"
-menuPunktClm l "Show pod state (desirec/observed)" showPodManifest m "Describe pod" describePod
+menuPunktClm j "List pods (ns=current)" "kubectl get pods -o wide" k "List pods (all namespaces)" "kubectl get pods --all-namespaces -o wide"
+menuPunktClm l "Show pod manifest (desired/observed)" showPodManifest m "Describe pod" describePod
 menuPunktClm n "Get logs" getPodLogs o "Log on to pod" logOnPod
 menuPunktClm p "Log on to DB" logOnDb r "Apply pod manifest" applyPodManifest
 menuPunkt s "Delete pod" deletePod
 echo
+submenuHead "Deployments:"
+menuPunktClm v "List deployments (ns=current)" "kubectl get deployments -o wide" w "List deployments (all namespaces)" "kubectl get deployments --all-namespaces -o wide"
+menuPunktClm x "Show deployment manifest (desired/observed)" showDeploymentManifest y "Describe deployment" describeDeployment
+menuPunktClm z "List replicasets (ns=current)" "kubectl get rs" 1 "Describe replica set" describeReplicaset
+echo
+submenuHead "Services:"
+menuPunktClm 5 "List services (ns=current)" "kubectl get services -o wide" 6 "List services (all namespaces)" "kubectl get services --all-namespaces -o wide"
+menuPunktClm 7 "Show service manifest (desired/observed)" showServiceManifest 8 "Describe service" describeService
 choice
 done
 echo "bye, bye, homie!"
