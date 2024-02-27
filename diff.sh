@@ -8,16 +8,16 @@ function numberedList () {
 function headHead () {
      importantLog "Comparing $actual HEAD to $actual/origin HEAD"
      if git status | grep "Your branch is behind"; then
-       diffDrillDownAdvanced "git diff --name-status $actual origin/$actual" "[ ].*$" "$actual" "origin/$actual"
+       diffDrillDownAdvanced "git diff --name-status $actual origin/$actual" "awk '{print \$2}'" "$actual" "origin/$actual"
      fi
      if git status | grep "Your branch is ahead"; then
-       diffDrillDownAdvanced "git diff --name-status origin/$actual $actual" "[ ].*$" "origin/$actual" "$actual"
+       diffDrillDownAdvanced "git diff --name-status origin/$actual $actual" "awk '{print \$2}'" "origin/$actual" "$actual"
      fi
 }
 
 function dirHead () {
    importantLog "Comparing working tree to HEAD"
-   diffDrillDownAdvanced "git diff --color --name-status HEAD" "[ ].*$" "HEAD"
+   diffDrillDownAdvanced "git diff --color --name-status HEAD" "awk '{print \$2}'" "HEAD"
 }
 
 function treeCommit () {
@@ -25,12 +25,12 @@ function treeCommit () {
    git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 100
    echo "Enter commit name"
    read cname
-   diffDrillDownAdvanced "git diff --name-status $cname" "[ ].*$" "$cname"
+   diffDrillDownAdvanced "git diff --name-status $cname" "awk '{print \$2}'" "$cname"
 }
 
 function treeStage () {
    commit=$(git show --oneline -s | grep -o "^[a-z0-9]*")
-   diffDrillDownAdvanced "git diff --name-status $commit" "[ ].*$" "$commit"	
+   diffDrillDownAdvanced "git diff --name-status $commit" "awk '{print \$2}'" "$commit"	
 }
 
 function commitCommit () {
@@ -40,7 +40,7 @@ function commitCommit () {
    read cnamea
    echo "(b) Enter second commit name"
    read cnameb
-   diffDrillDownAdvanced "git diff --name-status $cnamea $cnameb" "[ ].*$" "$cnamea" "$cnameb"
+   diffDrillDownAdvanced "git diff --name-status $cnamea $cnameb" "awk '{print \$2}'" "$cnamea" "$cnameb"
 }
 
 function branchBranch () {
@@ -50,7 +50,7 @@ function branchBranch () {
    read cnamea
    echo "(b) Enter second branch name to compare:"
    read cnameb
-   diffDrillDownAdvanced "git diff --name-status $cnamea $cnameb" "[ ].*$" "$cnamea" "$cnameb"	
+   diffDrillDownAdvanced "git diff --name-status $cnamea $cnameb" "awk '{print \$2}'" "$cnamea" "$cnameb"	
 }
 
 function actualHeadbranchHead () {
@@ -58,7 +58,7 @@ function actualHeadbranchHead () {
     git branch --all
     echo "Enter branch name to compare against $actual head"
     read cnamea
-    diffDrillDownAdvanced "git diff --name-status $actual $cnamea" "[ ].*$" "$actual" "$cnamea"  
+    diffDrillDownAdvanced "git diff --name-status $actual $cnamea" "awk '{print \$2}'" "$actual" "$cnamea"  
 }
 
 function showCommits () {
@@ -80,7 +80,7 @@ function diffDate () {
    echo "latest commit in this branch hstory: $newestcommit"
    newestcommitdate=$(git log --pretty=format:'%h %ad' --graph --date=format:"%Y-%m-%d" | head -1 | cut -f3 -d' ') # the newest commit date
    coloredLog "changes since $sincedate 12 a.m. / midnight: comparing commit $commitpriortolast made on $commitdatepriortolast against $newestcommit (latest commit) made on $newestcommitdate"
-   diffDrillDownAdvanced "git diff --name-status $commitpriortolast $newestcommit" "[ ].*$" "$commitpriortolast" "$newestcommit"
+   diffDrillDownAdvanced "git diff --name-status $commitpriortolast $newestcommit" "awk '{print \$2}'" "$commitpriortolast" "$newestcommit"
    #git log --oneline | grep --color -E 'Add slack integration to pipeline|$'
    # why git log is so strange: http://stackoverflow.com/questions/14618022/how-does-git-log-since-count why 
    # alternative: git diff 'HEAD@{2017-03-03T00:00:00}' HEAD --name-status | nl

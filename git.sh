@@ -210,13 +210,7 @@ function showAllBranches () {
 }
 
 function showBranchHisto(){
-              git branch 
-            echo "Select branch (hit enter for actual):"
-            read bname
-            if [[ ! -z "$bname" ]]; then
-                  git checkout $bname
-            fi
-            git log --pretty=format:'%Cred%h%Creset | %Cgreen%ad%Creset | %s %C(yellow)%d%Creset %C(bold blue)[%an]%Creset %Cgreen(%cr)%Creset' --graph --date=short
+   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 }
 
 function setUpstream() {
@@ -278,6 +272,7 @@ function changeBranch () {
 }
 
 function fetachAll () {
+       git fetch --prune
        git fetch --all
 }
 
@@ -339,7 +334,7 @@ function coRemoteBranch () {
        git checkout --track $bname 
 }
 
-git fetch --all 2> /dev/null
+git fetch --all --tags 2> /dev/null
 continuemenu=true
 
 while ${continuemenu:=true}; do
