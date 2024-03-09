@@ -1,4 +1,5 @@
 #!/bin/sh
+
 # specify keyfunktionsmap=() array and source this script for flex menu capability
 # examplecall: menuPunkt a "Push actual (fetch, merge, commit, push)" pushActual.
 rawdatafilename=rawdata.txt
